@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
-    location: String,
+    university: String,
     department: String,
     viewedProfile: Number,
     impressions: Number,
