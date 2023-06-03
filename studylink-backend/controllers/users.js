@@ -19,13 +19,20 @@ export const getUserFriends = async (req, res) => {
       user.friends.map((id) => User.findById(id))
     );
 
-    const formattedFiends = friends.map(
-      ({ _id, firsName, lastName, department, university, picturePath }) => {
-        return { _id, firsName, lastName, department, university, picturePath };
+    const formattedFriends = friends.map(
+      ({ _id, firstName, lastName, department, university, picturePath }) => {
+        return {
+          _id,
+          firstName,
+          lastName,
+          department,
+          university,
+          picturePath,
+        };
       }
     );
 
-    res.status(200).json(formattedFiends);
+    res.status(200).json(formattedFriends);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -35,12 +42,12 @@ export const getUserFriends = async (req, res) => {
 
 export const addRemoveFriend = async (req, res) => {
   try {
-    const { id: friendId } = req.params;
+    const { id, friendId } = req.params;
     const user = await User.findById(id);
-    const friend = User.findById(friendId);
+    const friend = await User.findById(friendId);
     if (user.friends.includes(friendId)) {
-      user.friend = user.friends.filter((id) => id !== friendId);
-      friend.friend = friend.friends.filter((id) => id !== id);
+      user.friends = user.friends.filter((id) => id !== friendId);
+      friend.friends = friend.friends.filter((id) => id !== id);
     } else {
       user.friends.push(friendId);
       friend.friends.push(id);
@@ -53,11 +60,18 @@ export const addRemoveFriend = async (req, res) => {
       user.friends.map((id) => User.findById(id))
     );
     const formattedFiends = friends.map(
-      ({ _id, firsName, lastName, department, university, picturePath }) => {
-        return { _id, firsName, lastName, department, university, picturePath };
+      ({ _id, firstName, lastName, department, university, picturePath }) => {
+        return {
+          _id,
+          firstName,
+          lastName,
+          department,
+          university,
+          picturePath,
+        };
       }
     );
-    res.status(200).json(formattedFiends);
+    res.status(200).json(formattedFriends);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
