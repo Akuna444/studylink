@@ -59,7 +59,7 @@ export const addRemoveFriend = async (req, res) => {
     const friends = await Promise.all(
       user.friends.map((id) => User.findById(id))
     );
-    const formattedFiends = friends.map(
+    const formattedFriends = friends.map(
       ({ _id, firstName, lastName, department, university, picturePath }) => {
         return {
           _id,
