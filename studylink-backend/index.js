@@ -69,7 +69,12 @@ mongoose
     app.listen(port, () => console.log(`Server Port: ${port}`));
 
     // ADD ALL DATA ONE TIME
+    // User.deleteMany();
+    // Post.deleteMany();
+    // User.updateMany(users);
+    // Post.updateMany(posts);
     // User.insertMany(users);
     // Post.insertMany(posts);
+    console.log("seed finished");
   })
   .catch((error) => console.log(error));
