@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
+const Friend = ({ friendId, name, subtitle, userPicturePath, department }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState();
@@ -72,6 +72,9 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
               </Typography>
               <Typography color={medium} fontSize="0.75rem">
                 {subtitle}
+              </Typography>
+              <Typography color={medium} fontSize="0.75rem">
+                {department}
               </Typography>
             </Box>
           </FlexBetween>
