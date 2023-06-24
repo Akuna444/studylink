@@ -18,13 +18,14 @@ const PostWidget = ({
   name,
   description,
   university,
+  department,
   picturePath,
   userPicturePath,
   likes,
   comments,
 }) => {
   const dispatch = useDispatch();
-  const { isComments, setIsComments } = useState(false);
+  const [isComments, setIsComments] = useState(false);
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
 
@@ -49,13 +50,14 @@ const PostWidget = ({
     dispatch(setPost({ post: updatedPost }));
   };
 
-  console.log(userPicturePath);
+  console.log(postId);
   return (
     <WidgetWrapper m="2rem 0">
       <Friend
         friendId={postUserId}
         name={name}
         subtitle={university}
+        department={department}
         userPicturePath={userPicturePath}
       />
       <Typography color={main} sx={{ mt: "1rem" }}>
