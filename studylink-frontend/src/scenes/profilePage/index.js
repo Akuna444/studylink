@@ -50,7 +50,6 @@ function ProfilePage() {
           flexBasis={isNonMobileScreens ? "42%" : null}
           mt={isNonMobileScreens ? null : "2rem"}
         >
-          <MyPostWidget picturePath={user.picturePath} />
           <PostsWidget userId={userId} isProfile={true} />
         </Box>
       </Box>
