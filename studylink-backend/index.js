@@ -50,7 +50,7 @@ const upload = multer({ storage });
 
 // FILE ROUTES
 app.post("/auth/register", upload.single("picture"), register);
-app.post("/posts", verifyToken, upload.single("picture"), createPost);
+app.post("/posts", verifyToken, upload.array("picture", "file"), createPost);
 
 // ROUTERS
 app.use("/auth", authRoutes);
