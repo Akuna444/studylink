@@ -50,7 +50,7 @@ const upload = multer({ storage });
 
 // FILE ROUTES
 app.post("/auth/register", upload.single("picture"), register);
-app.post("/posts", verifyToken, upload.array("picture", "file"), createPost);
+app.post("/posts", verifyToken, upload.any(), createPost);
 
 // ROUTERS
 app.use("/auth", authRoutes);
@@ -75,6 +75,7 @@ mongoose
     // Post.updateMany(posts);
     // User.insertMany(users);
     // Post.insertMany(posts);
+
     console.log("seed finished");
   })
   .catch((error) => console.log(error));
