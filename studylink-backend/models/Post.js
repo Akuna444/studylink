@@ -17,7 +17,14 @@ const postSchema = mongoose.Schema(
     university: String,
     department: String,
     description: String,
-    picturePath: String,
+    picturePath: {
+      type: String,
+      default: null,
+    },
+    filePath: {
+      type: String,
+      default: null,
+    },
     userPicturePath: String,
     likes: {
       type: Map,
