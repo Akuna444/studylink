@@ -23,6 +23,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, department }) => {
   const medium = palette.neutral.medium;
   console.log(friends);
   const isFriend = friends.find((friend) => friend._id === friendId);
+  // const isFriend = true;
 
   const patchFriend = async () => {
     setIsLoading(true);
