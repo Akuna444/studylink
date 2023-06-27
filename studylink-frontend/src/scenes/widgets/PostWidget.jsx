@@ -5,6 +5,7 @@ import {
   ShareOutlined,
 } from "@mui/icons-material";
 import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
+import { Worker, Viewer } from "@react-pdf-viewer/core";
 import FlexBetween from "../../components/FlexBetween";
 import WidgetWrapper from "../../components/WidgetWrapper";
 import Friend from "../../components/Friend";
@@ -20,10 +21,13 @@ const PostWidget = ({
   university,
   department,
   picturePath,
+  filePath,
   userPicturePath,
   likes,
   comments,
 }) => {
+  const PDF = `http://localhost:3001/assets/${filePath}`;
+  console.log(PDF);
   const dispatch = useDispatch();
   const [isComments, setIsComments] = useState(false);
   const token = useSelector((state) => state.token);
@@ -50,7 +54,6 @@ const PostWidget = ({
     dispatch(setPost({ post: updatedPost }));
   };
 
-  console.log(postId);
   return (
     <WidgetWrapper m="2rem 0">
       <Friend
@@ -72,6 +75,28 @@ const PostWidget = ({
           src={`http://localhost:3001/assets/${picturePath}`}
         />
       )}
+
+      {filePath && (
+        <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.6.172/build/pdf.worker.min.js">
+          <div
+            style={{
+              border: "1px solid rgba(0, 0, 0, 0.3)",
+              height: "600px",
+              overflow: "auto",
+            }}
+          >
+            <Viewer fileUrl={PDF} />
+          </div>
+        </Worker>
+
+        // <iframe src={PDF + "#toolbar=0"} height={800} width={500} />
+      )}
+      {/* <embed
+        src={PDF + "#toolbar=0"}
+        type="application/pdf"
+        height={800}
+        width={500}
+      /> */}
       <FlexBetween mt="0.25rem">
         <FlexBetween gap="1rem">
           <FlexBetween gap="0.3rem">

@@ -17,6 +17,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     });
 
     const data = await response.json();
+
     setIsLoading(false);
     dispatch(setPosts({ posts: data }));
   };
@@ -37,15 +38,13 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     if (isProfile) {
       getUserPosts();
     } else {
-      console.log("satar");
       getPosts();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  console.log(posts);
   return (
     <>
-      {" "}
       {isLoading ? (
         <p>Loading</p>
       ) : (
@@ -59,6 +58,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
             university,
             department,
             picturePath,
+            filePath,
             userPicturePath,
             likes,
             comments,
@@ -72,6 +72,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
               university={university}
               department={department}
               picturePath={picturePath}
+              filePath={filePath}
               userPicturePath={userPicturePath}
               likes={likes}
               comments={comments}

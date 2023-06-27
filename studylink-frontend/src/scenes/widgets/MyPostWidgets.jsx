@@ -30,6 +30,8 @@ import { setPosts } from "../../state";
 const MyPostWidget = ({ picturePath }) => {
   const dispatch = useDispatch();
   const [isImage, setIsImage] = useState(false);
+  const [isFile, setIsFile] = useState(false);
+  const [file, setFile] = useState("");
   const [image, setImage] = useState("");
   const [post, setPost] = useState("");
   const { palette } = useTheme();
@@ -45,6 +47,14 @@ const MyPostWidget = ({ picturePath }) => {
     if (image) {
       formData.append("picture", image);
       formData.append("picturePath", image.name);
+      setFile("");
+    }
+
+    if (file) {
+      console.log(file.name);
+      formData.append("file", file);
+      formData.append("filePath", file.name);
+      setImage("");
     }
 
     const response = await fetch("http://localhost:3001/posts", {
@@ -54,7 +64,7 @@ const MyPostWidget = ({ picturePath }) => {
       },
       body: formData,
     });
-
+    console.log(response);
     const posts = await response.json();
     dispatch(setPosts({ posts }));
     setImage(null);
@@ -77,7 +87,7 @@ const MyPostWidget = ({ picturePath }) => {
           }}
         />
       </FlexBetween>
-      {isImage && (
+      {(isImage || isFile) && (
         <Box
           border={`1px solid ${medium}`}
           borderRadius="5px"
@@ -85,9 +95,11 @@ const MyPostWidget = ({ picturePath }) => {
           p="1rem"
         >
           <DropZone
-            acceptedFiles=".jpg, .jpeg, .png"
+            acceptedFiles={isImage ? ".jpg, .jpeg, .png" : ".pdf, .doc, .docx"}
             multiple={false}
-            onDrop={(acceptedFiles) => setImage(acceptedFiles[0])}
+            onDrop={(acceptedFiles) =>
+              isImage ? setImage(acceptedFiles[0]) : setFile(acceptedFiles[0])
+            }
           >
             {({ getRootProps, getInputProps }) => (
               <FlexBetween>
@@ -101,16 +113,18 @@ const MyPostWidget = ({ picturePath }) => {
                   }}
                 >
                   <input {...getInputProps()} />
-                  {!image ? (
-                    <p>Add Image Here</p>
+                  {!image && !file ? (
+                    <p>Add {isImage ? "image" : "File"} Here</p>
                   ) : (
                     <FlexBetween>
-                      <Typography>{image.name}</Typography>
+                      <Typography>
+                        {isImage ? image.name : file.name}
+                      </Typography>
                       <EditOutlined />
                     </FlexBetween>
                   )}
                 </Box>
-                {image && (
+                {(image || file) && (
                   <IconButton
                     onClick={() => setImage(null)}
                     sx={{ width: "15%" }}
@@ -137,16 +151,25 @@ const MyPostWidget = ({ picturePath }) => {
             Image
           </Typography>
         </FlexBetween>
+        <FlexBetween gap="0.25rem" onClick={() => setIsFile(!isFile)}>
+          <AttachFileOutlined sx={{ color: mediumMain }} />
+          <Typography
+            color={mediumMain}
+            sx={{
+              "&:hover": { cursor: "pointer", color: medium },
+            }}
+          >
+            Attachment
+          </Typography>
+        </FlexBetween>
+
         {isNonMobileScreens ? (
           <>
             <FlexBetween gap="0.25rem">
               <GifBoxOutlined sx={{ color: mediumMain }} />
               <Typography color={mediumMain}>Clip</Typography>
             </FlexBetween>
-            <FlexBetween gap="0.25rem">
-              <AttachFileOutlined sx={{ color: mediumMain }} />
-              <Typography color={mediumMain}>Attachment</Typography>
-            </FlexBetween>
+
             <FlexBetween gap="0.25rem">
               <MicOutlined sx={{ color: mediumMain }} />
               <Typography color={mediumMain}>Audio</Typography>
