@@ -157,7 +157,7 @@ function NavBar() {
               )}
             </IconButton>
             <Message
-              onClick={() => navigate("/chat")}
+              // onClick={() => navigate("/chat")}
               sx={{ fontSize: "25px" }}
             />
             <Notifications sx={{ fontSize: "25px" }} />
