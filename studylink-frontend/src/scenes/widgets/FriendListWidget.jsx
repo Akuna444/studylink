@@ -16,7 +16,7 @@ const FriendListWidget = ({ userId }) => {
   const getFriends = async () => {
     setIsLoading(true);
     const response = await fetch(
-      `http://localhost:3001/users/${userId}/friends`,
+      `https://studylink.onrender.com/users/${userId}/friends`,
       {
         method: "GET",
         headers: {
