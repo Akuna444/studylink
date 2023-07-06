@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "install-server": "cd studylink-backend && npm install",
-    "start-server": "cd studylink-backend && node app.js",
+    "start-server": "cd studylink-backend && node index.js",
     "install-client": "cd studylink-frontend && npm install",
     "build-client": "cd studylink-frontend && npm run build",
     "start-client": "cd studylink-frontend && npm run start"
