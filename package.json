@@ -1,5 +1,16 @@
 {
-  "dependencies": {
-    "mongoose": "^7.3.1"
-  }
+  "name": "studylink",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install-server": "cd studylink-backend && npm install",
+    "start-server": "cd studylink-backend && node app.js",
+    "install-client": "cd studylink-frontend && npm install",
+    "build-client": "cd studylink-frontend && npm run build",
+    "start-client": "cd studylink-frontend && npm run start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
