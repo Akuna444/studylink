@@ -17,12 +17,12 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     });
 
     const data = await response.json();
-
     setIsLoading(false);
     dispatch(setPosts({ posts: data }));
   };
 
   const getUserPosts = async () => {
+    setIsLoading(true);
     const response = await fetch(
       `https://studylink.onrender.com/posts/${userId}`,
       {
@@ -35,6 +35,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
     const data = await response.json();
     dispatch(setPosts({ posts: data }));
+    setIsLoading(false);
   };
 
   useEffect(() => {
