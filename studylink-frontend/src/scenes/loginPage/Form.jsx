@@ -64,7 +64,7 @@ function Form() {
     }
     formData.append("picturePath", values.picture.name);
     const savedUserResponse = await fetch(
-      "http://localhost:5001/auth/register",
+      "https://studylink.onrender.com/auth/register",
       {
         method: "POST",
         body: formData,
@@ -79,13 +79,16 @@ function Form() {
 
   async function login(values, onSubmitProps) {
     try {
-      const loggedInResponse = await fetch("http://localhost:5001/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
+      const loggedInResponse = await fetch(
+        "https://studylink.onrender.com/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        }
+      );
       if (!loggedInResponse.ok) {
         throw new Error("Invalid credential");
       }
