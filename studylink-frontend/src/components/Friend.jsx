@@ -12,8 +12,9 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, department }) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState();
 
-  const { _id, friends } = useSelector((state) => state.user);
-
+  const user = useSelector((state) => state.user);
+  const friends = user.friends;
+  const _id = user._id;
   const token = useSelector((state) => state.token);
 
   const { palette } = useTheme();
@@ -21,14 +22,22 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, department }) => {
   const primaryDark = palette.primary.dark;
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
-  console.log(friends);
-  const isFriend = friends.find((friend) => friend._id === friendId);
+  console.log(
+    useSelector((state) => state.user),
+    "frr",
+    friends
+  );
+  let isFriend;
+  if (friends.length > 0) {
+    isFriend = friends.find((friend) => friend._id === friendId);
+  }
   // const isFriend = true;
 
   const patchFriend = async () => {
+    console.log(token, "toookkkk");
     setIsLoading(true);
     const response = await fetch(
-      `https://studylink.onrender.com/users/${_id}/${friendId}`,
+      `http://localhost:5001/users/${_id}/${friendId}`,
       {
         method: "PATCH",
         headers: {

@@ -11,12 +11,13 @@ const FriendListWidget = ({ userId }) => {
   const { palette } = useTheme();
   const [isLoading, setIsLoading] = useState(false);
   const token = useSelector((state) => state.token);
-  const friends = useSelector((state) => state.user.friends);
+  const user = useSelector((state) => state.user);
+  const friends = user.friends;
 
   const getFriends = async () => {
     setIsLoading(true);
     const response = await fetch(
-      `https://studylink.onrender.com/users/${userId}/friends`,
+      `http://localhost:5001/users/${userId}/friends`,
       {
         method: "GET",
         headers: {
@@ -48,18 +49,24 @@ const FriendListWidget = ({ userId }) => {
       {isLoading ? (
         <p>Loading...</p>
       ) : (
-        <Box display="flex" flexDirection="column" gap="1.5rem">
-          {friends.map((friend) => (
-            <Friend
-              key={friend._id}
-              friendId={friend._id}
-              name={`${friend.firstName} ${friend.lastName}`}
-              subtitle={friend.university}
-              department={friend.department}
-              userPicturePath={friend.picturePath}
-            />
-          ))}
-        </Box>
+        <>
+          {friends.length > 0 ? (
+            <Box display="flex" flexDirection="column" gap="1.5rem">
+              {friends.map((friend) => (
+                <Friend
+                  key={friend._id}
+                  friendId={friend._id}
+                  name={`${friend.firstName} ${friend.lastName}`}
+                  subtitle={friend.university}
+                  department={friend.department}
+                  userPicturePath={friend.picturePath}
+                />
+              ))}
+            </Box>
+          ) : (
+            <p>No friends</p>
+          )}{" "}
+        </>
       )}
     </WidgetWrapper>
   );
