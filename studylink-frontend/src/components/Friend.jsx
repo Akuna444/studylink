@@ -37,7 +37,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, department }) => {
     console.log(token, "toookkkk");
     setIsLoading(true);
     const response = await fetch(
-      `http://localhost:5001/users/${_id}/${friendId}`,
+      `https://studylink.onrender.com/users/${_id}/${friendId}`,
       {
         method: "PATCH",
         headers: {
