@@ -10,7 +10,7 @@ import {
   useTheme,
 } from "@mui/material";
 
-import { EditOutlined, Password } from "@mui/icons-material";
+import { EditOutlined } from "@mui/icons-material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -64,7 +64,7 @@ function Form() {
     }
     formData.append("picturePath", values.picture.name);
     const savedUserResponse = await fetch(
-      "https://studylink.onrender.com/auth/register",
+      "http://localhost:5001/auth/register",
       {
         method: "POST",
         body: formData,
@@ -79,22 +79,20 @@ function Form() {
 
   async function login(values, onSubmitProps) {
     try {
-      const loggedInResponse = await fetch(
-        "https://studylink.onrender.com/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(values),
-        }
-      );
+      const loggedInResponse = await fetch("http://localhost:5001/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
       if (!loggedInResponse.ok) {
         throw new Error("Invalid credential");
       }
       const loggedIn = await loggedInResponse.json();
       onSubmitProps.resetForm();
       if (loggedIn) {
+        console.log(loggedIn.user, "usssa");
         dispatch(
           setLogin({
             user: loggedIn.user,
