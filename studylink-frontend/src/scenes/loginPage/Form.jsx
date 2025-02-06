@@ -45,9 +45,9 @@ const intialValuesRegister = {
 };
 
 const intialValuesLogin = {
-  email: "",
-  password: "",
-};
+  email: "mulatu@gmail.com",
+  password: "$2b$10$dsasdgsagasda//G9JxQ4bQ8KXf4OAIe/X/AK9skyWUy",
+};;
 
 function Form() {
   const [pageType, setPageType] = useState("login");
