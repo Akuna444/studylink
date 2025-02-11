@@ -1,6 +1,4 @@
-// eslint-disable-next-line no-unused-vars
 import { useState } from "react";
-
 import {
   Box,
   Button,
@@ -8,8 +6,8 @@ import {
   useMediaQuery,
   Typography,
   useTheme,
+  CircularProgress, // Import CircularProgress for the loading indicator
 } from "@mui/material";
-
 import { EditOutlined } from "@mui/icons-material";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -29,12 +27,12 @@ const registerSchema = yup.object().shape({
   picture: yup.string().required("required"),
 });
 
-const loginShcema = yup.object().shape({
+const loginSchema = yup.object().shape({
   email: yup.string().email("invalid email").required("required"),
   password: yup.string().required("required"),
 });
 
-const intialValuesRegister = {
+const initialValuesRegister = {
   firstName: "",
   lastName: "",
   email: "",
@@ -44,40 +42,50 @@ const intialValuesRegister = {
   picture: "",
 };
 
-const intialValuesLogin = {
+const initialValuesLogin = {
   email: "mulatu@gmail.com",
   password: "$2b$10$dsasdgsagasda//G9JxQ4bQ8KXf4OAIe/X/AK9skyWUy",
-};;
+};
 
 function Form() {
   const [pageType, setPageType] = useState("login");
+  const [isLoading, setIsLoading] = useState(false); // Add loading state
   const { palette } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isNonMobile = useMediaQuery("(min-width: 600px)");
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
+
   async function register(values, onSubmitProps) {
+    setIsLoading(true); // Set loading to true
     const formData = new FormData();
     for (let value in values) {
       formData.append(value, values[value]);
     }
     formData.append("picturePath", values.picture.name);
-    const savedUserResponse = await fetch(
-      "https://studylink.onrender.com/auth/register",
-      {
-        method: "POST",
-        body: formData,
+    try {
+      const savedUserResponse = await fetch(
+        "https://studylink.onrender.com/auth/register",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const savedUser = await savedUserResponse.json();
+      onSubmitProps.resetForm();
+      if (savedUser) {
+        setPageType("login");
       }
-    );
-    const savedUser = await savedUserResponse.json();
-    onSubmitProps.resetForm();
-    if (savedUser) {
-      setPageType("login");
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setIsLoading(false); // Set loading to false
     }
   }
 
   async function login(values, onSubmitProps) {
+    setIsLoading(true); // Set loading to true
     try {
       const loggedInResponse = await fetch(
         "https://studylink.onrender.com/auth/login",
@@ -95,7 +103,6 @@ function Form() {
       const loggedIn = await loggedInResponse.json();
       onSubmitProps.resetForm();
       if (loggedIn) {
-        console.log(loggedIn.user, "usssa");
         dispatch(
           setLogin({
             user: loggedIn.user,
@@ -106,22 +113,25 @@ function Form() {
       }
     } catch (error) {
       alert(error.message);
+    } finally {
+      setIsLoading(false); // Set loading to false
     }
   }
+
   async function handleFormSubmit(values, onSubmitProps) {
     if (isLogin) {
       await login(values, onSubmitProps);
     }
-
     if (isRegister) {
       await register(values, onSubmitProps);
     }
   }
+
   return (
     <Formik
       onSubmit={handleFormSubmit}
-      initialValues={isLogin ? intialValuesLogin : intialValuesRegister}
-      validationSchema={isLogin ? loginShcema : registerSchema}
+      initialValues={isLogin ? initialValuesLogin : initialValuesRegister}
+      validationSchema={isLogin ? loginSchema : registerSchema}
     >
       {({
         values,
@@ -150,14 +160,9 @@ function Form() {
                   onChange={handleChange}
                   value={values.firstName}
                   name="firstName"
-                  error={
-                    Boolean(touched.firstName) && Boolean(errors.firstName)
-                  }
-                  sx={{
-                    gridColumn: "span 2",
-                  }}
+                  error={Boolean(touched.firstName) && Boolean(errors.firstName)}
+                  sx={{ gridColumn: "span 2" }}
                 />
-
                 <TextField
                   label="Last Name"
                   onBlur={handleBlur}
@@ -165,9 +170,7 @@ function Form() {
                   value={values.lastName}
                   name="lastName"
                   error={Boolean(touched.lastName) && Boolean(errors.lastName)}
-                  sx={{
-                    gridColumn: "span 2",
-                  }}
+                  sx={{ gridColumn: "span 2" }}
                 />
                 <TextField
                   label="University"
@@ -175,26 +178,17 @@ function Form() {
                   onChange={handleChange}
                   value={values.university}
                   name="university"
-                  error={
-                    Boolean(touched.university) && Boolean(errors.university)
-                  }
-                  sx={{
-                    gridColumn: "span 4",
-                  }}
+                  error={Boolean(touched.university) && Boolean(errors.university)}
+                  sx={{ gridColumn: "span 4" }}
                 />
-
                 <TextField
                   label="Department"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.department}
                   name="department"
-                  error={
-                    Boolean(touched.department) && Boolean(errors.department)
-                  }
-                  sx={{
-                    gridColumn: "span 4",
-                  }}
+                  error={Boolean(touched.department) && Boolean(errors.department)}
+                  sx={{ gridColumn: "span 4" }}
                 />
                 <Box
                   gridColumn="span 4"
@@ -212,9 +206,7 @@ function Form() {
                         {...getRootProps()}
                         border={`2px dashed ${palette.primary.main}`}
                         p="1rem"
-                        sx={{
-                          "&:hover": { cursor: "pointer" },
-                        }}
+                        sx={{ "&:hover": { cursor: "pointer" } }}
                       >
                         <input {...getInputProps()} />
                         {!values.picture ? (
@@ -239,9 +231,7 @@ function Form() {
               value={values.email}
               name="email"
               error={Boolean(touched.email) && Boolean(errors.email)}
-              sx={{
-                gridColumn: "span 4",
-              }}
+              sx={{ gridColumn: "span 4" }}
             />
             <TextField
               label="Password"
@@ -251,9 +241,7 @@ function Form() {
               type="password"
               name="password"
               error={Boolean(touched.password) && Boolean(errors.password)}
-              sx={{
-                gridColumn: "span 4",
-              }}
+              sx={{ gridColumn: "span 4" }}
             />
           </Box>
           <Box>
@@ -261,15 +249,24 @@ function Form() {
             <Button
               fullWidth
               type="submit"
+              disabled={isLoading} // Disable the button when loading
               sx={{
                 m: "2rem 0",
                 p: "1rem",
-                backgroundColor: palette.primary.main,
+                backgroundColor: isLoading ? palette.neutral.medium : palette.primary.main,
                 color: palette.background.alt,
-                "&:hover": { color: palette.primary.main },
+                "&:hover": {
+                  color: isLoading ? palette.background.alt : palette.primary.main,
+                },
               }}
             >
-              {isLogin ? "LOGIN" : "REGISTER"}
+              {isLoading ? (
+                <CircularProgress size={24} color="inherit" /> // Show loading indicator
+              ) : isLogin ? (
+                "LOGIN"
+              ) : (
+                "REGISTER"
+              )}
             </Button>
             <Typography
               onClick={() => {
@@ -285,7 +282,6 @@ function Form() {
                 },
               }}
             >
-              {" "}
               {isLogin
                 ? "Don't have an account? Register here..."
                 : "Already have an account Login here..."}
